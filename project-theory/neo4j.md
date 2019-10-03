@@ -14,16 +14,16 @@ Graph databases are built for use with transactional (OLTP) systems and are engi
 
 ### There are two important properties of graph database technologies:
 
-- Graph Storage
+- #### Graph Storage
   Some graph databases use native graph storage that is specifically designed to store and manage graphs, while others use relational or object-oriented databases instead. Non-native storage is often much more latent.
-- Graph Processing Engine
+- #### Graph Processing Engine
   Native graph processing (a.k.a. “index-free adjacency”) is the most efficient means of processing graph data since connected nodes physically “point” to each other in the database. Non-native graph processing uses other means to process CRUD operations.
 
 # What Are the Advantages of Using a Graph Database?
 
-- Performance
+- #### Performance
   For intensive data relationship handling, graph databases improve performance by several orders of magnitude. With traditional databases, relationship queries will come to a grinding halt as the number and depth of relationships increase. In contrast, graph database performance stays constant even as your data grows year over year.
-- Flexibility
+- #### Flexibility
   With graph databases, IT and data architect teams move at the speed of business because the structure and schema of a graph model flexes as applications and industries change. Rather than exhaustively modeling a domain ahead of time, data teams can add to the existing graph structure without endangering current functionality.
-- Agility
+- #### Agility
   Developing with graph databases aligns perfectly with today’s agile, test-driven development practices, allowing your graph database to evolve in step with the rest of the application and any changing business requirements. Modern graph databases are equipped for frictionless development and graceful systems maintenance.

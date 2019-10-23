@@ -294,4 +294,50 @@ db.employees.find({ fname: { $regex: /^S/ } }).pretty();
 db.employees.find({ birthCountry: { $ne: "Bulgaria" } }).pretty();
 
 // ------------------ 7 ----------------------
-db.employees.find({ $or: [{ fname: { $regex: /.*I.*/i } }, { lname: { $regex: /.*I.*/i } }, { sname: { $regex: /.*I.*/i } }] }).pretty();
+db.employees
+  .find({
+    $or: [
+      { fname: { $regex: /.*I.*/i } },
+      { lname: { $regex: /.*I.*/i } },
+      { sname: { $regex: /.*I.*/i } }
+    ]
+  })
+  .pretty();
+
+// ================== 2 ======================
+// ------------------ 1 ----------------------
+// ------------------ 2 ----------------------
+// ------------------ 3 ----------------------
+
+// ================== 3 ======================
+// ------------------ 1 ----------------------
+// ------------------ 2 ----------------------
+// ------------------ 3 ----------------------
+
+// ================== 4 ======================
+// ------------------ 1 ----------------------
+db.clients.find({ accounts: { currency: { $ne: "BGN" } } }).pretty();
+
+// ------------------ 2 ----------------------
+db.clients.find({ accounts: { balance: { $eq: 0 } } }).pretty();
+
+// ------------------ 3 ----------------------
+var changeAccountName = function() {
+  []
+  db.clients.find().forEach(function(c) {
+    for (var i = 0; i < c.accounts.length; i++) {
+      var currency = c.accounts[i];
+      db.clients.update(
+        { $and: [{_id: c._id }, {account}]},
+        {
+          $set: { "accounts.$.name": c.fname + c.lname + "account" + currency }
+        },
+        { multi: true }
+      );
+    }
+  });
+}.update(
+  { _id: ObjectId("587e2be4411f058ab566d7dc") },
+  { $set: { "body.viewed.main": true } },
+  { multi: true }
+);

@@ -1,6 +1,6 @@
-db.clients.drop()
-db.employees.drop()
-db.divisions.drop()
+db.clients.drop();
+db.employees.drop();
+db.divisions.drop();
 
 // generators
 let generateFname = function() {
@@ -14,7 +14,7 @@ let generateFname = function() {
     "Ekaterina"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   return collection[index];
 };
 
@@ -29,7 +29,7 @@ let generateLname = function() {
     "Velika"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   return collection[index];
 };
 
@@ -44,7 +44,7 @@ let generateSname = function() {
     "Velika"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   let hasSname = Math.round(Math.random());
   return hasSname ? collection[index] : null;
 };
@@ -60,14 +60,14 @@ let generateAddress = function() {
     "55, Pobeda st., Plovdiv"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   return collection[index];
 };
 
 let generatePhone = function() {
   let collection = ["089", "088", "087"];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   let phoneBuilder = collection[index];
   for (let i = 0; i < 7; i++) {
     let n = Math.floor(Math.random() * (9 + 1) - 1);
@@ -87,7 +87,7 @@ let generateEmail = function(name) {
     "@freemail.com"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   return name + collection[index];
 };
 
@@ -105,7 +105,7 @@ let generatePosition = function() {
 
 let generateReportTo = function(name) {
   let collection = db.emplyees.find();
-  let index = Math.floor(Math.random() * collection.count() - 1);
+  let index = Math.floor(Math.random() * (collection.count() - 1) + 1);
   let isReports = Math.round(Math.random());
   return isReports ? collection[index] : null;
 };
@@ -125,7 +125,7 @@ let generateBirthCountry = function() {
     "Germany"
   ];
 
-  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
+  let index = Math.floor(Math.random() * (collection.length - 1) + 1);
   return collection[index];
 };
 
@@ -163,7 +163,7 @@ let generateHireDate = function() {
 
 let generateDivisionId = () => {
   let collection = db.divisions.find();
-  let index = Math.floor(Math.random() * collection.count());
+  let index = Math.floor(Math.random() * (collection.count() - 1) + 1);
   return collection[index]._id;
 };
 
@@ -198,25 +198,16 @@ let seed = function() {
       birthCountry: generateBirthCountry(),
       hireDate: generateHireDate()
     });
-    let currentEmployee = db.clients.find(
-      { fname: fname },
-      { $and: [{ lname: lname }] }
-    );
     if (!!sname) {
-      print('update sname for : ' + fname )
       db.employees.update(
-        { _id: currentEmployee._id },
-        {
-          $set: { sname: sname }
-        }
+        { fname: fname, $and: [{ lname: lname }] },
+        { $set: { sname: sname } }
       );
     }
     if (!!reportTo) {
       db.employees.update(
-        { _id: currentEmployee._id },
-        {
-          $set: { reportTo: reportTo }
-        }
+        { fname: fname, $and: [{ lname: lname }] },
+        { $set: { reportTo: reportTo } }
       );
     }
   }
@@ -231,7 +222,7 @@ let seed = function() {
       lname: lname,
       address: generateAddress(),
       cellphone: generatePhone(),
-      email: generateEmail(fname+lname),
+      email: generateEmail(fname + lname),
       accounts: [
         {
           name: "BG50UNCR300037737",
@@ -330,22 +321,9 @@ db.clients.find({ accounts: { currency: { $ne: "BGN" } } }).pretty();
 db.clients.find({ accounts: { balance: { $eq: 0 } } }).pretty();
 
 // ------------------ 3 ----------------------
-let changeAccountName = function() {
-  [];
-  db.clients.find().forEach(function(c) {
-    for (let i = 0; i < c.accounts.length; i++) {
-      let currency = c.accounts[i];
-      db.clients.update(
-        { $and: [{ _id: c._id }, { account }] },
-        {
-          $set: { "accounts.$.name": c.fname + c.lname + "account" + currency }
-        },
-        { multi: true }
-      );
-    }
-  });
-}.update(
-  { _id: ObjectId("587e2be4411f058ab566d7dc") },
-  { $set: { "body.viewed.main": true } },
-  { multi: true }
-);
+db.clients.update(
+  {},
+  [{
+
+  }]
+)

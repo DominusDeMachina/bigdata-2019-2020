@@ -218,7 +218,7 @@ let seed = function() {
     let lname = generateLname();
     let sname = generateSname();
     let accounts = [];
-    for (let i = 0; i < Math.floor(Math.random() * (3 - 1) + 1); i++) {
+    for (let i = 0; i < Math.floor(Math.random() * 3); i++) {
       accounts.push(generateAccount())
     }
     db.clients.insert({
@@ -331,7 +331,8 @@ db.clients.find({ accounts: { balance: { $eq: 0 } } }).pretty();
             as: "acc",
             in: {
                 name: "$$acc.currency",
-                currency: "$$acc.currency"
+                currency: "$$acc.currency",
+                balance: "$$acc.balance"
             }
           }
         }

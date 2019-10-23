@@ -1,23 +1,6 @@
-// Divisions
-db.divisions.insert({
-  name: "Operations"
-});
-db.divisions.insert({
-  name: "Loan"
-});
-db.divisions.insert({
-  name: "Deposit"
-});
-
-var generateDivisionId = () => {
-  var collection = db.divisions.find();
-  var index = Math.floor(Math.random() * collection.length);
-  return collection[index]._id;
-};
-
 // generators
-var generateFname = function() {
-  var collection = [
+let generateFname = function() {
+  let collection = [
     "Mihail",
     "Ivan",
     "Serioja",
@@ -27,12 +10,12 @@ var generateFname = function() {
     "Ekaterina"
   ];
 
-  var index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * 7);
   return collection[index];
 };
 
-var generateLname = function() {
-  var collection = [
+let generateLname = function() {
+  let collection = [
     "Petrov",
     "Ivanov",
     "Jozik",
@@ -42,12 +25,12 @@ var generateLname = function() {
     "Velika"
   ];
 
-  var index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * 7);
   return collection[index];
 };
 
-var generateSname = function() {
-  var collection = [
+let generateSname = function() {
+  let collection = [
     "Petrov",
     "Ivanov",
     "Jozik",
@@ -57,13 +40,13 @@ var generateSname = function() {
     "Velika"
   ];
 
-  var index = Math.floor(Math.random() * 7);
-  var hasSname = Math.round(Math.random());
+  let index = Math.floor(Math.random() * 7);
+  let hasSname = Math.round(Math.random());
   return hasSname ? collection[index] : null;
 };
 
-var generateAddress = function() {
-  var collection = [
+let generateAddress = function() {
+  let collection = [
     "236, Bulgaria blvd., Plovdiv",
     "12, Vasil Aprilov st., Plovdiv",
     "178, Sredets sq., Sofia",
@@ -73,24 +56,24 @@ var generateAddress = function() {
     "55, Pobeda st., Plovdiv"
   ];
 
-  var index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * 7);
   return collection[index];
 };
 
-var generatePhone = function() {
-  var collection = ["089", "088", "087"];
+let generatePhone = function() {
+  let collection = ["089", "088", "087"];
 
-  var index = Math.floor(Math.random() * 3);
-  var phoneBuilder = collection[index];
-  for (var i = 0; i < 7; i++) {
-    var n = Math.floor(Math.random() * 9);
+  let index = Math.floor(Math.random() * 3);
+  let phoneBuilder = collection[index];
+  for (let i = 0; i < 7; i++) {
+    let n = Math.floor(Math.random() * 9);
     phoneBuilder.concat(n);
   }
   return phoneBuilder;
 };
 
-var generateEmail = function(name) {
-  var collection = [
+let generateEmail = function(name) {
+  let collection = [
     "@google.com",
     "@hotmail.com",
     "@live.com",
@@ -100,35 +83,35 @@ var generateEmail = function(name) {
     "@freemail.com"
   ];
 
-  var index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * 7);
   return name + collection[index];
 };
 
-var generatePosition = function() {
-  var collection = [
+let generatePosition = function() {
+  let collection = [
     "cashier",
     "accountant",
     "operator",
     "financial consultant"
   ];
 
-  var index = Math.floor(Math.random() * 4);
+  let index = Math.floor(Math.random() * 4);
   return collection[index];
 };
 
-var generateReportTo = function(name) {
-  var collection = db.emplyees.find();
-  var index = Math.floor(Math.random() * collection.length);
-  var isReports = Math.round(Math.random());
+let generateReportTo = function(name) {
+  let collection = db.emplyees.find();
+  let index = Math.floor(Math.random() * collection.count() - 1);
+  let isReports = Math.round(Math.random());
   return isReports ? collection[index] : null;
 };
 
-var generateSalary = function() {
+let generateSalary = function() {
   return Math.floor(Math.random() * (6000 - 2000 + 1) + 2000);
 };
 
-var generateBirthCountry = function() {
-  var collection = [
+let generateBirthCountry = function() {
+  let collection = [
     "Bulgaria",
     "Ukraine",
     "Moldova",
@@ -138,12 +121,12 @@ var generateBirthCountry = function() {
     "Germany"
   ];
 
-  var index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * 7);
   return collection[index];
 };
 
-var generateAccountName = function(currency) {
-  var accountName;
+let generateAccountName = function(currency) {
+  let accountName;
   do {
     accountName = Math.floor(
       Math.random() * (700000000 - 30000000 + 1) + 30000000
@@ -152,11 +135,11 @@ var generateAccountName = function(currency) {
   return accountName;
 };
 
-var generateAccount = function() {
-  var collection = ["BGN", "USD", "EUR"];
-  var index = Math.floor(Math.random() * (3 - 1) + 1);
-  var currency = collection[index];
-  var accountName = generateAccountName(currency);
+let generateAccount = function() {
+  let collection = ["BGN", "USD", "EUR"];
+  let index = Math.floor(Math.random() * (3 - 1) + 1);
+  let currency = collection[index];
+  let accountName = generateAccountName(currency);
   return {
     name: accountName,
     currency: currency,
@@ -164,26 +147,43 @@ var generateAccount = function() {
   };
 };
 
-var randomDate = function(start, end) {
+let randomDate = function(start, end) {
   return new Date(
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
   );
 };
 
-var generateHireDate = function() {
+let generateHireDate = function() {
   return randomDate(new Date(2006, 0, 1), new Date());
+};
+
+let generateDivisionId = () => {
+  let collection = db.divisions.find();
+  let index = Math.floor(Math.random() * collection.count());
+  return collection[index]._id;
 };
 
 // Seeding
 
-var seed = function() {
+let seed = function() {
+  // Divisions
+  db.divisions.insert({
+    name: "Operations"
+  });
+  db.divisions.insert({
+    name: "Loan"
+  });
+  db.divisions.insert({
+    name: "Deposit"
+  });
+
   // employees
-  for (var i = 0; i < 20; i++) {
-    var fname = generateFname();
-    var lname = generateLname();
-    var sname = generateSname();
-    var reportTo = generateReportTo();
-    var division = generateDivisionId();
+  for (let i = 0; i < 20; i++) {
+    let fname = generateFname();
+    let lname = generateLname();
+    let sname = generateSname();
+    let reportTo = generateReportTo();
+    let division = generateDivisionId();
     db.employees.insert({
       fname: fname,
       lname: lname,
@@ -194,11 +194,11 @@ var seed = function() {
       birthCountry: generateBirthCountry(),
       hireDate: generateHireDate()
     });
-    var currentEmployee = db.employees.find({
+    let currentEmployee = db.employees.find({
       $and: [{ fname: fname }, { lname: lname }]
     })[0];
     if (!!sname) {
-      db.update(
+      db.employees.update(
         { _id: currentEmployee._id },
         {
           sname: sname
@@ -206,7 +206,7 @@ var seed = function() {
       );
     }
     if (!!reportTo) {
-      db.update(
+      db.employees.update(
         { _id: currentEmployee._id },
         {
           reportTo: reportTo
@@ -216,9 +216,9 @@ var seed = function() {
   }
 
   // clients
-  for (var i = 0; i < 50; i++) {
-    var fname = generateFname();
-    var lname = generateLname();
+  for (let i = 0; i < 50; i++) {
+    let fname = generateFname();
+    let lname = generateLname();
     db.clients.insert({
       fname: fname,
       lname: lname,
@@ -233,11 +233,11 @@ var seed = function() {
         }
       ]
     });
-    var currentClient = db.clients.find({
+    let currentClient = db.clients.find({
       $and: [{ fname: fname }, { lname: lname }]
     })[0];
     if (!!sname) {
-      db.update(
+      db.clients.update(
         { _id: currentClient._id },
         {
           sname: sname
@@ -261,7 +261,7 @@ db.employees.find().forEach(function() {
 });
 
 // ------------------ 3 ----------------------
-var generateEmployeeEmail = () => {
+let generateEmployeeEmail = () => {
   db.employees.find().forEach(function(e) {
     db.employees.update(
       { _id: e._id },
@@ -281,7 +281,7 @@ db.employees.find().forEach(function() {
 
 // ------------------ 4 ----------------------
 
-var date = new Date();
+let date = new Date();
 date.setFullYear(date.getFullYear() - 5);
 db.employees.find({ hireDate: { $lt: date } }).pretty();
 
@@ -322,13 +322,13 @@ db.clients.find({ accounts: { currency: { $ne: "BGN" } } }).pretty();
 db.clients.find({ accounts: { balance: { $eq: 0 } } }).pretty();
 
 // ------------------ 3 ----------------------
-var changeAccountName = function() {
-  []
+let changeAccountName = function() {
+  [];
   db.clients.find().forEach(function(c) {
-    for (var i = 0; i < c.accounts.length; i++) {
-      var currency = c.accounts[i];
+    for (let i = 0; i < c.accounts.length; i++) {
+      let currency = c.accounts[i];
       db.clients.update(
-        { $and: [{_id: c._id }, {account}]},
+        { $and: [{ _id: c._id }, { account }] },
         {
           $set: { "accounts.$.name": c.fname + c.lname + "account" + currency }
         },

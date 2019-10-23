@@ -1,3 +1,7 @@
+db.clients.drop()
+db.employees.drop()
+db.divisions.drop()
+
 // generators
 let generateFname = function() {
   let collection = [
@@ -10,7 +14,7 @@ let generateFname = function() {
     "Ekaterina"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   return collection[index];
 };
 
@@ -25,7 +29,7 @@ let generateLname = function() {
     "Velika"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   return collection[index];
 };
 
@@ -40,7 +44,7 @@ let generateSname = function() {
     "Velika"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   let hasSname = Math.round(Math.random());
   return hasSname ? collection[index] : null;
 };
@@ -56,18 +60,18 @@ let generateAddress = function() {
     "55, Pobeda st., Plovdiv"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   return collection[index];
 };
 
 let generatePhone = function() {
   let collection = ["089", "088", "087"];
 
-  let index = Math.floor(Math.random() * 3);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   let phoneBuilder = collection[index];
   for (let i = 0; i < 7; i++) {
-    let n = Math.floor(Math.random() * 9);
-    phoneBuilder.concat(n);
+    let n = Math.floor(Math.random() * (9 + 1) - 1);
+    phoneBuilder += n;
   }
   return phoneBuilder;
 };
@@ -83,7 +87,7 @@ let generateEmail = function(name) {
     "@freemail.com"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   return name + collection[index];
 };
 
@@ -121,7 +125,7 @@ let generateBirthCountry = function() {
     "Germany"
   ];
 
-  let index = Math.floor(Math.random() * 7);
+  let index = Math.floor(Math.random() * (collection.length + 1) - 1);
   return collection[index];
 };
 
@@ -194,14 +198,16 @@ let seed = function() {
       birthCountry: generateBirthCountry(),
       hireDate: generateHireDate()
     });
-    let currentEmployee = db.employees.find({
-      $and: [{ fname: fname }, { lname: lname }]
-    })[0];
+    let currentEmployee = db.clients.find(
+      { fname: fname },
+      { $and: [{ lname: lname }] }
+    );
     if (!!sname) {
+      print('update sname for : ' + fname )
       db.employees.update(
         { _id: currentEmployee._id },
         {
-          sname: sname
+          $set: { sname: sname }
         }
       );
     }
@@ -209,7 +215,7 @@ let seed = function() {
       db.employees.update(
         { _id: currentEmployee._id },
         {
-          reportTo: reportTo
+          $set: { reportTo: reportTo }
         }
       );
     }
@@ -219,12 +225,13 @@ let seed = function() {
   for (let i = 0; i < 50; i++) {
     let fname = generateFname();
     let lname = generateLname();
+    let sname = generateSname();
     db.clients.insert({
       fname: fname,
       lname: lname,
       address: generateAddress(),
       cellphone: generatePhone(),
-      email: generateEmail(),
+      email: generateEmail(fname+lname),
       accounts: [
         {
           name: "BG50UNCR300037737",
@@ -233,14 +240,15 @@ let seed = function() {
         }
       ]
     });
-    let currentClient = db.clients.find({
-      $and: [{ fname: fname }, { lname: lname }]
-    })[0];
+    let currentClient = db.clients.find(
+      { fname: fname },
+      { $and: [{ lname: lname }] }
+    );
     if (!!sname) {
       db.clients.update(
         { _id: currentClient._id },
         {
-          sname: sname
+          $set: { sname: sname }
         }
       );
     }
@@ -250,13 +258,13 @@ let seed = function() {
 // ================== 1 ======================
 // ------------------ 1 ----------------------
 
-db.divisions.find().forEach(function() {
+db.divisions.find().forEach(function(e) {
   print(e.name);
 });
 
 // ------------------ 2 ----------------------
 
-db.employees.find().forEach(function() {
+db.employees.find().forEach(function(e) {
   print(e.fname + " " + e.lname + "\t" + e.salary);
 });
 

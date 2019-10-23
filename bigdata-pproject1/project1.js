@@ -145,11 +145,10 @@ var generateBirthCountry = function() {
 var generateAccountName = function(currency) {
   var accountName;
   do {
-    accountName = Math.floor(Math.random() * (700000000 - 30000000 + 1) + 30000000);
-  } while (
-    db.clients
-      .find({ accounts: { name: accountName } }).count() > 0
-  );
+    accountName = Math.floor(
+      Math.random() * (700000000 - 30000000 + 1) + 30000000
+    );
+  } while (db.clients.find({ accounts: { name: accountName } }).count() > 0);
   return accountName;
 };
 
@@ -163,6 +162,16 @@ var generateAccount = function() {
     currency: currency,
     balance: Math.floor(Math.random() * 700000)
   };
+};
+
+var randomDate = function(start, end) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
+};
+
+var generateHireDate = function() {
+  return randomDate(new Date(2006, 0, 1), new Date());
 };
 
 // Seeding
@@ -182,7 +191,8 @@ var seed = function() {
       cellphone: generatePhone(),
       position: generatePosition(),
       salary: generateSalary(),
-      birthCountry: generateBirthCountry()
+      birthCountry: generateBirthCountry(),
+      hireDate: generateHireDate()
     });
     var currentEmployee = db.employees.find({
       $and: [{ fname: fname }, { lname: lname }]
@@ -238,12 +248,22 @@ var seed = function() {
 };
 
 // ================== 1 ======================
+// ------------------ 1 ----------------------
+
+db.divisions.find().forEach(function() {
+  print(e.name);
+});
+
+// ------------------ 2 ----------------------
+
+db.employees.find().forEach(function() {
+  print(e.fname + " " + e.lname + "\t" + e.salary);
+});
 
 // ------------------ 3 ----------------------
-
 var generateEmployeeEmail = () => {
-  db.emplyees.find().forEach(function(e) {
-    db.emplyees.update(
+  db.employees.find().forEach(function(e) {
+    db.employees.update(
       { _id: e._id },
       {
         email:
@@ -252,3 +272,26 @@ var generateEmployeeEmail = () => {
     );
   });
 };
+
+generateEmployeeEmail();
+
+db.employees.find().forEach(function() {
+  print(e.fname + " " + e.lname + "\t" + e.email);
+});
+
+// ------------------ 4 ----------------------
+
+var date = new Date();
+date.setFullYear(date.getFullYear() - 5);
+db.employees.find({ hireDate: { $lt: date } }).pretty();
+
+// ------------------ 5 ----------------------
+
+db.employees.find({ fname: { $regex: /^S/ } }).pretty();
+
+// ------------------ 6 ----------------------
+
+db.employees.find({ birthCountry: { $ne: "Bulgaria" } }).pretty();
+
+// ------------------ 7 ----------------------
+db.employees.find({ $or: [{ fname: { $regex: /.*I.*/i } }, { lname: { $regex: /.*I.*/i } }, { sname: { $regex: /.*I.*/i } }] }).pretty();

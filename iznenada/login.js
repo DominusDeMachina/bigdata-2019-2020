@@ -9,13 +9,14 @@ function checkHash(inputHash) {
     const dir = './my-wallet';
     const file = 'wallet.json';
     const filePath = dir + "/" + file;
+    const status = document.querySelector("#status");
 
     const hashString = fs.readFileSync(filePath);
     const hashObject = JSON.parse(hashString);
     debugger
     if (inputHash === hashObject.walletId) {
-        console.log("Logged in");
+        status.innerHTML = "Logged in";
     } else {
-        console.log("Error wallet hash");
+        status.innerHTML ="Error wallet hash";
     }
 }

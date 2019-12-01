@@ -104,10 +104,10 @@ let generatePosition = function() {
 };
 
 let generateReportTo = function(name) {
-  let collection = db.employees.find();
-  let index = Math.floor(Math.random() * collection.count());
+  let collection = db.employees.find().toArray();
+  let index = Math.floor(Math.random() * collection.length);
   let isReports = Math.round(Math.random());
-  return isReports ? collection[index] : null;
+  return isReports ? collection[index]._id : null;
 };
 
 let generateSalary = function() {
@@ -162,8 +162,8 @@ let generateHireDate = function() {
 };
 
 let generateDivisionId = () => {
-  let collection = db.divisions.find();
-  let index = Math.floor(Math.random() * (collection.count() - 1) + 1);
+  let collection = db.divisions.find().toArray();
+  let index = Math.floor(Math.random() * collection.length);
   return collection[index]._id;
 };
 
@@ -187,7 +187,6 @@ let seed = function() {
     let lname = generateLname();
     let sname = generateSname();
     let reportTo = generateReportTo();
-    let division = generateDivisionId();
     db.employees.insert({
       fname: fname,
       lname: lname,
@@ -196,7 +195,8 @@ let seed = function() {
       position: generatePosition(),
       salary: generateSalary(),
       birthCountry: generateBirthCountry(),
-      hireDate: generateHireDate()
+      hireDate: generateHireDate(),
+      division: generateDivisionId()
     });
     if (!!sname) {
       db.employees.update(
@@ -219,7 +219,7 @@ let seed = function() {
     let sname = generateSname();
     let accounts = [];
     for (let i = 0; i < Math.floor(Math.random() * 3); i++) {
-      accounts.push(generateAccount())
+      accounts.push(generateAccount());
     }
     db.clients.insert({
       fname: fname,
@@ -293,15 +293,13 @@ db.employees.find({ fname: { $regex: /^S/ } }).pretty();
 db.employees.find({ birthCountry: { $ne: "Bulgaria" } }).pretty();
 
 // ------------------ 7 ----------------------
-db.employees
-  .find({
+db.employees.find({
     $or: [
       { fname: { $regex: /.*I.*/i } },
       { lname: { $regex: /.*I.*/i } },
       { sname: { $regex: /.*I.*/i } }
     ]
-  })
-  .pretty();
+  }).pretty();
 
 // ================== 2 ======================
 // ------------------ 1 ----------------------
@@ -312,6 +310,24 @@ db.employees
 // ------------------ 1 ----------------------
 // ------------------ 2 ----------------------
 // ------------------ 3 ----------------------
+// ------------------ 4 ----------------------
+db.employees.find({ salary: { $gt: 2000, $lt: 3000 } })
+// ------------------ 5 ----------------------
+db.employees.find({ salary: { $in: [ 2500, 3000, 3500, 5000] }})
+// ------------------ 6 ----------------------
+db.employees.find({ reportTo: { $exists: false } })
+// ------------------ 7 ----------------------
+db.employees.find({ hireDate: { $lt: date }, $and: [{ salary: { $gt: 5000 } }] }).sort({ fname: -1 }).pretty();
+// ------------------ 8 ----------------------
+db.employees.aggregate([
+  {
+    $sort: {
+      salary: -1
+    }
+  }
+])
+// ------------------ 9 ----------------------
+// ------------------ 10 ----------------------
 
 // ================== 4 ======================
 // ------------------ 1 ----------------------
@@ -321,22 +337,24 @@ db.clients.find({ accounts: { currency: { $ne: "BGN" } } }).pretty();
 db.clients.find({ accounts: { balance: { $eq: 0 } } }).pretty();
 
 // ------------------ 3 ----------------------
-  db.clients.update(
-    {},
-    [{
+db.clients.update(
+  {},
+  [
+    {
       $set: {
         accounts: {
           $map: {
             input: "$accounts",
             as: "acc",
             in: {
-                name: "$$acc.currency",
-                currency: "$$acc.currency",
-                balance: "$$acc.balance"
+              name: "$$acc.currency",
+              currency: "$$acc.currency",
+              balance: "$$acc.balance"
             }
           }
         }
       }
-    }],
-    { multi: true }
-  );
+    }
+  ],
+  { multi: true }
+);

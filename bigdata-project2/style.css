@@ -1,0 +1,71 @@
+#container {
+  margin: 0 auto;
+}
+
+#login {
+  position: absolute;
+  width: 400px;
+  height: 100px;
+  top: 250px;
+  left: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: aqua;
+  border-width: 2px;
+  border-radius: 15px;
+}
+
+#transaction {
+  position: absolute;
+  width: 600px;
+  height: 100px;
+  top: 250px;
+  left: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-color: aqua;
+  border-width: 2px;
+  border-radius: 15px;
+  background-color: blue;
+}
+
+#sidebar {
+  float: left;
+  margin-right: 20px;
+  width: 200px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#sidebar ul li button {
+  display: block;
+  color: blue;
+  border-color: blue;
+  border-width: 1px;
+  width: 160px;
+  height: 40px;
+  border-radius: 15px;
+  margin-bottom: 3px;
+}
+
+#main ul li button {
+  display: block;
+  color: chocolate;
+  border-color: chocolate;
+  border-width: 1px;
+  width: 400px;
+  height: 35px;
+  margin-bottom: 3px;
+}
+
+#main {
+  margin-top: 40px;
+}
+
+.hidden {
+  visibility: hidden;
+}

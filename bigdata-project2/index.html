@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Unichain</title>
+  </head>
+  <body>
+    <h1>Unichain</h1>
+    <div id="container"></div>
+    <div id="sidebar">my sidebar</div>
+    <div id="main">content</div>
+    <div id="login">
+      <label for="user-id">User Id</label>
+      <input
+        type="text"
+        id="user-id"
+        style="margin-left: 10px; margin-right: 10px;"
+      />
+      <input type="button" id="login-button" value="Login" />
+    </div>
+    <div id="transaction">
+      <label for="amount">Amount</label>
+      <input
+        type="text"
+        id="amount"
+        style="margin-left: 10px; margin-right: 10px;"
+      />
+
+      <input type="button" id="transfer-button" value="Transfer" />
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

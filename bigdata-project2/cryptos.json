@@ -1,0 +1,13 @@
+[
+  { "id": 0, "name": "Bitcoin" },
+  { "id": 1, "name": "Ethereum" },
+  { "id": 2, "name": "Tether" },
+  { "id": 3, "name": "Litecoin" },
+  { "id": 4, "name": "EOS" },
+  { "id": 5, "name": "Binance Coin" },
+  { "id": 6, "name": "Stellar" },
+  { "id": 7, "name": "TRON" },
+  { "id": 8, "name": "Cardano" },
+  { "id": 9, "name": "Monero" },
+  { "id": 10, "name": "NEO" }
+]

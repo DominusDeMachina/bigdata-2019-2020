@@ -1,0 +1,6 @@
+[
+  { "currencyId": 2, "amount": 100 },
+  { "currencyId": 5, "amount": 200 },
+  { "currencyId": 10, "amount": 300 },
+  { "currencyId": 6, "amount": 100 }
+]
